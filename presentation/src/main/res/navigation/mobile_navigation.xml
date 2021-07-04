@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_news">
+    <fragment
+        android:id="@+id/nav_news"
+        android:name="com.example.newstestovoe.ui.newsFragment.NewsFragment"
+        android:label="Новости"
+        tools:layout="@layout/fragment_news" >
+        <action
+            android:id="@+id/action_nav_news_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_filters"
+        android:name="com.example.newstestovoe.ui.filterFragment.FiltersFragment"
+        android:label="Фильтры"
+        tools:layout="@layout/fragment_filters" >
+        <action
+            android:id="@+id/action_nav_filters_to_filterRedactorFragment2"
+            app:destination="@id/filterRedactorFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/filterRedactorFragment2"
+        android:name="com.example.newstestovoe.ui.redactorFragment.FilterRedactorFragment"
+        android:label="Новый фильтр" >
+        <action
+            android:id="@+id/action_filterRedactorFragment2_to_nav_filters"
+            app:destination="@id/nav_filters"
+            app:popUpTo="@id/nav_filters"
+            app:popUpToInclusive="true"/>
+
+    </fragment>
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.example.newstestovoe.ui.newsFragment.WebViewFragment" />
+</navigation>

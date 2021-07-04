@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">NewsTestovoe</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Для InfoSysco</string>
+    <string name="nav_header_subtitle">https://github.com/msKibler</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_news">Новости</string>
+    <string name="menu_filters">Фильтры</string>
+    <string name="filter_name_text">Название</string>
+    <string name="description_text">Описание</string>
+    <string name="error_text">Заполните все поля</string>
+    <string name="change_filter_title">Изменить фильтр</string>
+    <string name="filter_peek_text">Фильтры</string>
+    <string name="no_news_text">Новостей пока нет.</string>
+</resources>
