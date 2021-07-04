@@ -24,7 +24,8 @@ class NewsAdapter(private val viewModel : NewsViewModel,
             containerView.author_text.text = news.author
             containerView.title_text.text = news.title
             containerView.news_description_text.text = news.description
-            containerView.published_text.text = news.publishedAt
+            containerView.published_text.text = news.publishedAt!!
+                .replace('T', ' ').replace('Z', ' ')
             if (news.urlToImage == null)
                 containerView.image_news.visibility = View.GONE
             else{
