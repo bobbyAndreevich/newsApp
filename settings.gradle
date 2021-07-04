@@ -1,0 +1,4 @@
+rootProject.name = "NewsTestovoe"
+include ':presentation'
+include ':domain'
+include ':data'
