@@ -1,4 +1,4 @@
-package com.example.data
+package com.example.data.news
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -16,8 +16,3 @@ class NewsMap(val author : String?, val title : String?, val description: String
             newsMap.url, newsMap.urlToImage, newsMap.publishedAt,  newsMap.stringFilter)
     }
 }
-/*
-* data class News(val author : String, val title : String, val description: String,
-                val url : String, val urlToImage : String, val publishedAt : String,
-                val content : String, val stringFilter : String) {
-}*/

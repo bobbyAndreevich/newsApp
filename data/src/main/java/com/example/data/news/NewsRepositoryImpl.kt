@@ -1,7 +1,7 @@
-package com.example.data
+package com.example.data.news
 
 import android.util.Log
-import com.example.data.filter.Database
+import com.example.data.Database
 import com.example.domain.NewsRepository
 import com.example.domain.entities.News
 import com.kwabenaberko.newsapilib.NewsApiClient
@@ -24,7 +24,7 @@ class NewsRepositoryImpl(val database: Database,
 
     override fun getNews(): Flow<List<News>> {
         return news.map {
-            it.map{NewsMap.toNews(it) }
+            it.map{ NewsMap.toNews(it) }
         }
     }
 

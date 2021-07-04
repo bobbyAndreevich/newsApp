@@ -49,17 +49,14 @@ class NewsViewModel(private val getFiltersUseCase: GetFiltersUseCase,
             mutableNewsData.value = it.sortedBy { it.publishedAt }
             notFilteredList = mutableNewsData.value!!
         }
-        GlobalScope.launch {
-            withContext(Dispatchers.Main) {
-                getNewsUseCase.getNews().asLiveData().observeForever(newsObserver)
-            }
-        }
+        getNewsUseCase.getNews().asLiveData().observeForever(newsObserver)
 
-            filtersObserver = Observer {
-                mutableFiltersData.value = it
-            }
-            getFiltersUseCase.getFilters().asLiveData().observeForever(filtersObserver)
+
+        filtersObserver = Observer {
+            mutableFiltersData.value = it
         }
+        getFiltersUseCase.getFilters().asLiveData().observeForever(filtersObserver)
+    }
 
 
 

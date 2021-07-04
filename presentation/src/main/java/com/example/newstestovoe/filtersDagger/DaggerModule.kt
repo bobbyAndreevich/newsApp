@@ -2,9 +2,9 @@ package com.example.newstestovoe.filtersDagger
 
 import androidx.room.Room
 import android.content.Context
-import com.example.data.NewsRepositoryImpl
+import com.example.data.news.NewsRepositoryImpl
 import com.example.data.filter.FilterRepositoryImpl
-import com.example.data.filter.Database
+import com.example.data.Database
 import com.example.domain.FilterRepository
 import com.example.domain.NewsRepository
 import com.example.domain.useCases.*

@@ -1,7 +1,8 @@
-package com.example.data.filter
+package com.example.data
 
 import androidx.room.*
-import com.example.data.NewsMap
+import com.example.data.filter.FilterMap
+import com.example.data.news.NewsMap
 import kotlinx.coroutines.flow.Flow
 
 @Suppress("AndroidUnresolvedRoomSqlReference")
