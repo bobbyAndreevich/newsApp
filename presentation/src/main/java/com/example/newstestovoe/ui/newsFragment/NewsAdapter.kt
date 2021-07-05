@@ -4,23 +4,25 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.marginTop
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.domain.entities.News
 import com.example.newstestovoe.R
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.fragment_filter_redactor.view.*
+import kotlinx.android.synthetic.main.fragment_news.view.*
 import kotlinx.android.synthetic.main.news_item.view.*
 
 class NewsAdapter(private val viewModel : NewsViewModel,
                   private val onItemClick : ((News) -> Unit),
                   private val context: Context?) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>(){
 
-    private var news = viewModel.getNews() ?: emptyList()
+    private var newsList = viewModel.getNews() ?: emptyList()
 
     inner class NewsViewHolder(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
-        fun bind(news: News) {
+        fun bind(news: News, position: Int) {
             containerView.author_text.text = news.author
             containerView.title_text.text = news.title
             containerView.news_description_text.text = news.description
@@ -34,11 +36,19 @@ class NewsAdapter(private val viewModel : NewsViewModel,
                     .into(containerView.image_news)
             }
 
+            if (position == 0 || news.stringDate != newsList[position - 1].stringDate)
+            {
+                containerView.main_date_text.visibility = View.VISIBLE
+                containerView.main_date_text.text = news.stringDate
+            }
+            else
+                containerView.main_date_text.visibility = View.GONE
+
         }
 
         init {
-            itemView.setOnClickListener {
-                onItemClick.invoke(news[adapterPosition])
+            itemView.news_content.setOnClickListener {
+                onItemClick.invoke(newsList[adapterPosition])
             }
         }
 
@@ -50,14 +60,14 @@ class NewsAdapter(private val viewModel : NewsViewModel,
     }
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
-        holder.bind(news[position])
+        holder.bind(newsList[position], position)
     }
 
-    override fun getItemCount(): Int = news.size
+    override fun getItemCount(): Int = newsList.size
 
 
     fun refreshNews(newsList: List<News>) {
-        news = newsList
+        this.newsList = newsList
         notifyDataSetChanged()
     }
 }

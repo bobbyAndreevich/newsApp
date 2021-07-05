@@ -2,16 +2,20 @@ package com.example.newstestovoe.filtersDagger
 
 import androidx.room.Room
 import android.content.Context
-import com.example.data.news.NewsRepositoryImpl
 import com.example.data.filter.FilterRepositoryImpl
 import com.example.data.Database
+import com.example.data.news.*
 import com.example.domain.FilterRepository
 import com.example.domain.NewsRepository
 import com.example.domain.useCases.*
+import com.google.gson.GsonBuilder
 import com.kwabenaberko.newsapilib.NewsApiClient
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.Dispatchers
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -40,7 +44,7 @@ class DaggerModule {
     }
 
     @Provides
-    fun provideNewsRepository(database: Database, apiClient: NewsApiClient) : NewsRepository{
+    fun provideNewsRepository(database: Database, apiClient: ApiRepository) : NewsRepository{
         return NewsRepositoryImpl(database, apiClient)
     }
 
@@ -59,9 +63,25 @@ class DaggerModule {
         ).build()
     }
 
+    @Provides
+    fun provideApiRepository(newsService: NewsService ) : ApiRepository{
+        return ApiRepository(newsService)
+    }
 
     @Provides
-    fun provideApiClient() : NewsApiClient{
-        return NewsApiClient("f43f4c7eabb642c3a31a5d5200b1f125")
+    fun provideNewsService(retrofit: Retrofit) : NewsService{
+        return retrofit.create(NewsService::class.java)
+    }
+
+    @Provides
+    fun provideRetrofit() : Retrofit{
+        val okHttpClient = OkHttpClient().newBuilder()
+            .build()
+
+        val gson = GsonBuilder().registerTypeAdapter(NewsMap::class.java, NewsMapJsonDeserializer()).create()
+
+        return Retrofit.Builder().client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl("https://newsapi.org/").build()
     }
 }

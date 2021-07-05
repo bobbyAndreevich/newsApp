@@ -13,10 +13,12 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import retrofit2.awaitResponse
+import java.net.UnknownHostException
 
 
 class NewsRepositoryImpl(val database: Database,
-                         val apiClient: NewsApiClient) : NewsRepository {
+                         val apiRepository: ApiRepository) : NewsRepository {
 
     private val filters = database.filterDao().getAllFilters()
     private val news = database.filterDao().getAllNews()
@@ -51,31 +53,28 @@ class NewsRepositoryImpl(val database: Database,
             }
         }
 
-
-    private suspend fun getRemoteNews(filterString: String){
-        apiClient.getEverything(
-            EverythingRequest.Builder()
-                .q(filterString)
-                .build(),
-            object : ArticlesResponseCallback {
-                override fun onSuccess(response: ArticleResponse) {
-                    GlobalScope.launch {
-                        withContext(Dispatchers.IO){
-                            database.filterDao()
-                                .insertNews(response.articles
-                                    .map { toNewsMap(it, filterString) })
-                        }
+    private fun getRemoteNews(filterString: String) {
+        GlobalScope.launch {
+            withContext(Dispatchers.IO){
+                try {
+                    val remoteNews = apiRepository.getNews(filterString).news
+                    remoteNews!!.forEach {
+                        it.stringFilter = filterString
                     }
-
+                    database.filterDao().insertNews(remoteNews.toList())
                 }
-
-                override fun onFailure(throwable: Throwable) {
-                    Log.e("message", throwable.message!!)
+                catch (e : retrofit2.HttpException){
+                    Log.e("http exception", e.message!!)
                 }
-            })
+                catch (e : UnknownHostException){
+                    Log.e("no connect", e.message!!)
+                }
+            }
+        }
+
     }
 
-    private fun toNewsMap(article: Article, filterString: String) : NewsMap =
-        NewsMap(article.author, article.title, article.description, article.url,
-            article.urlToImage, article.publishedAt, filterString)
+
+
+
 }

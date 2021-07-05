@@ -14,26 +14,37 @@ class NewsViewModel(private val getFiltersUseCase: GetFiltersUseCase,
     CoroutineScope, Filterable {
 
 
+    private val job = SupervisorJob()
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job + CoroutineExceptionHandler{ _, e -> throw e}
+
     private lateinit var newsObserver: Observer<List<News>>
     private lateinit var filtersObserver : Observer<List<Filter>>
 
-
     private val mutableNewsData = MutableLiveData<List<News>>()
     val newsData: LiveData<List<News>> = mutableNewsData
+
+    private val mutableFiltersData = MutableLiveData<List<Filter>>()
+    val filtersData: LiveData<List<Filter>> = mutableFiltersData
+    private var notFilteredList = listOf<News>()
+
+    val filterSelected = MutableLiveData<Int>().apply { value = 0 }
+
+    /*
+    spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                viewModel.getPriority(position)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+        spinner.setSelection(viewModel.priority.value!!.value)*/
+
+
 
 
     init {
         onCreate()
     }
-
-    private val job = SupervisorJob()
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + job + CoroutineExceptionHandler{ _, e -> throw e}
-
-
-    private val mutableFiltersData = MutableLiveData<List<Filter>>()
-    val filtersData: LiveData<List<Filter>> = mutableFiltersData
-    private var notFilteredList = listOf<News>()
 
     fun getNews() = mutableNewsData.value
 

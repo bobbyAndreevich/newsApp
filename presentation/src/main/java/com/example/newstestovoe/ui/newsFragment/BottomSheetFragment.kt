@@ -35,9 +35,12 @@ class BottomSheetFragment() : Fragment() {
     }
 
 
-    private fun observeViewModel(){
+    private fun observeViewModel() {
         viewModel.filtersData.observe(viewLifecycleOwner, Observer {
-                it.forEach{filter: Filter -> filtersList.add(filter.name) }
+            it.forEach { filter: Filter -> filtersList.add(filter.name) }
+        })
+        viewModel.filterSelected.observe(viewLifecycleOwner, Observer {
+            filters_spinner.setSelection(it)
         })
     }
 
@@ -48,9 +51,16 @@ class BottomSheetFragment() : Fragment() {
         )
         filters_spinner.adapter = spinnerArrayAdapter
         filters_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, l: Long) {
+            override fun onItemSelected(
+                adapterView: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                l: Long
+            ) {
                 viewModel.filter.filter(filtersList[position])
+                viewModel.filterSelected.value = position
             }
+
             override fun onNothingSelected(adapterView: AdapterView<*>?) {}
         }
     }

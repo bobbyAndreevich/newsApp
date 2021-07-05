@@ -14,15 +14,10 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    companion object{
-        @SuppressLint("StaticFieldLeak")
-        lateinit var CONTEXT : Context
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        CONTEXT = this
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         val navController = findNavController(R.id.nav_host_fragment_content_main)
