@@ -51,7 +51,6 @@ android {
 dependencies {
 
 
-    implementation 'com.github.KwabenBerko:News-API-Java:1.0.0'
 
 
     implementation 'com.google.dagger:dagger:2.35.1'

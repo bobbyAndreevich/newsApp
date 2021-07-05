@@ -9,7 +9,6 @@ import com.example.domain.FilterRepository
 import com.example.domain.NewsRepository
 import com.example.domain.useCases.*
 import com.google.gson.GsonBuilder
-import com.kwabenaberko.newsapilib.NewsApiClient
 import dagger.Module
 import dagger.Provides
 import kotlinx.coroutines.Dispatchers
@@ -78,7 +77,6 @@ class DaggerModule {
         val okHttpClient = OkHttpClient().newBuilder()
             .build()
 
-        val gson = GsonBuilder().registerTypeAdapter(NewsMap::class.java, NewsMapJsonDeserializer()).create()
 
         return Retrofit.Builder().client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())

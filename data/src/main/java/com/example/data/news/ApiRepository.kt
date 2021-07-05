@@ -1,6 +1,5 @@
 package com.example.data.news
 
-import retrofit2.Call
 
 
 class ApiRepository(private val apiService: NewsService) {

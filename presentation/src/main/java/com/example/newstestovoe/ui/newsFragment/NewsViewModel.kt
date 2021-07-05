@@ -30,15 +30,6 @@ class NewsViewModel(private val getFiltersUseCase: GetFiltersUseCase,
 
     val filterSelected = MutableLiveData<Int>().apply { value = 0 }
 
-    /*
-    spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.getPriority(position)
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-        spinner.setSelection(viewModel.priority.value!!.value)*/
-
 
 
 
@@ -57,8 +48,16 @@ class NewsViewModel(private val getFiltersUseCase: GetFiltersUseCase,
 
     private fun onCreate(){
         newsObserver = Observer {
-            mutableNewsData.value = it.sortedBy { it.publishedAt }
-            notFilteredList = mutableNewsData.value!!
+            if (filterSelected.value == 0) {
+                mutableNewsData.value = it.sortedBy { it.publishedAt }
+                notFilteredList = mutableNewsData.value!!
+            }
+            else{
+                notFilteredList = it.sortedBy { it.publishedAt }
+                mutableNewsData.value = notFilteredList.filter {
+                    it.stringFilter == filtersData.value!![filterSelected.value!! - 1].name
+                }
+            }
         }
         getNewsUseCase.getNews().asLiveData().observeForever(newsObserver)
 
@@ -80,7 +79,7 @@ class NewsViewModel(private val getFiltersUseCase: GetFiltersUseCase,
                 if (stringFilter ==  "Все")
                     results.values = notFilteredList
                 else
-                    results.values = notFilteredList!!.filter { it.stringFilter == stringFilter }
+                    results.values = notFilteredList.filter { it.stringFilter == stringFilter }
                 return results
             }
 
