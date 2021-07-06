@@ -30,7 +30,11 @@ class FilterAdapter(
 
         init {
             itemView.setOnClickListener {
-                onItemClick.invoke(filters[adapterPosition])
+                if (adapterPosition == RecyclerView.NO_POSITION) {
+                    return@setOnClickListener
+                }
+                else
+                    onItemClick.invoke(filters[adapterPosition])
             }
         }
 

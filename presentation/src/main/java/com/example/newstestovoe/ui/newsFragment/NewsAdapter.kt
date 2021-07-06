@@ -70,7 +70,11 @@ class NewsAdapter(private val viewModel : NewsViewModel,
 
         init {
             itemView.news_content.setOnClickListener {
-                onItemClick.invoke(newsList[adapterPosition])
+                if (adapterPosition == RecyclerView.NO_POSITION) {
+                    return@setOnClickListener
+                }
+                else
+                    onItemClick.invoke(newsList[adapterPosition])
             }
         }
 
